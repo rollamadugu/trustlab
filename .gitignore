@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.pytest_cache/
+
+# Results are intentionally tracked as reproducibility evidence.
+# (benchmark + experiment outputs committed on purpose)

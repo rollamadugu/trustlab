@@ -1,0 +1,46 @@
+{
+  "experiment": "trust_metric",
+  "seeds": 15,
+  "retention_target": 0.7,
+  "modalities": {
+    "oracle": {
+      "trust_roc_auc": {
+        "mean": 0.7566,
+        "std": 0.0321
+      },
+      "naive_roc_auc": 0.5,
+      "ece": 0.0757,
+      "a12_trustworthy_vs_falsepass": 0.7566,
+      "a12_magnitude": "large",
+      "mann_whitney_p_median": 0.0,
+      "false_pass_rate_naive": 0.6101,
+      "false_pass_rate_trust_at_retain": 0.504
+    },
+    "heal": {
+      "trust_roc_auc": {
+        "mean": 0.9472,
+        "std": 0.0099
+      },
+      "naive_roc_auc": 0.5,
+      "ece": 0.0418,
+      "a12_trustworthy_vs_falsepass": 0.9472,
+      "a12_magnitude": "large",
+      "mann_whitney_p_median": 0.0,
+      "false_pass_rate_naive": 0.1118,
+      "false_pass_rate_trust_at_retain": 0.0048
+    },
+    "judge": {
+      "trust_roc_auc": {
+        "mean": 0.9443,
+        "std": 0.0171
+      },
+      "naive_roc_auc": 0.5,
+      "ece": 0.0451,
+      "a12_trustworthy_vs_falsepass": 0.9443,
+      "a12_magnitude": "large",
+      "mann_whitney_p_median": 0.0,
+      "false_pass_rate_naive": 0.4054,
+      "false_pass_rate_trust_at_retain": 0.1884
+    }
+  }
+}

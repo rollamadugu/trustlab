@@ -1,0 +1,47 @@
+{
+  "experiment": "false_confidence_gap",
+  "seeds": 15,
+  "modalities": {
+    "oracle": {
+      "false_confidence_gap": {
+        "n": 15,
+        "mean": 0.6188888888888889,
+        "median": 0.6166666666666667,
+        "min": 0.5979166666666667,
+        "max": 0.6416666666666667,
+        "std": 0.012464455636769213
+      },
+      "mean_green_per_run": 480.0
+    },
+    "heal": {
+      "false_confidence_gap": {
+        "n": 15,
+        "mean": 0.10756711935397559,
+        "median": 0.10861423220973783,
+        "min": 0.09143407122232916,
+        "max": 0.12487899322362052,
+        "std": 0.008938387219766529
+      },
+      "mean_green_per_run": 1049.8666666666666
+    },
+    "judge": {
+      "false_confidence_gap": {
+        "n": 15,
+        "mean": 0.4070670259096095,
+        "median": 0.40604026845637586,
+        "min": 0.3830155979202773,
+        "max": 0.44227642276422763,
+        "std": 0.01438469891222022
+      },
+      "mean_green_per_run": 604.5333333333333
+    }
+  },
+  "oracle_fcg_by_subject": {
+    "classify_bmi": 0.0517,
+    "discount": 0.815,
+    "fizzbuzz": 0.2475,
+    "grade": 0.9967,
+    "is_leap_year": 0.6667,
+    "triangle_type": 0.9358
+  }
+}
