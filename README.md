@@ -1,5 +1,6 @@
 # TrustLab — Trust in AI-Driven Software Testing
 
+[![CI](https://github.com/rollamadugu/trustlab/actions/workflows/main.yml/badge.svg)](https://github.com/rollamadugu/trustlab/actions/workflows/main.yml)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-standard--library-success)
 ![Tests](https://img.shields.io/badge/tests-19%20passing-brightgreen)
