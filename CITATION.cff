@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use TrustLab in your work, please cite it as below."
+title: "TrustLab: Measuring the False-Confidence Gap and a Calibrated Trust Metric for AI-Driven Software Testing"
+type: software
+authors:
+  - family-names: "Rollamadugu"
+    given-names: "Krishnasai"
+    orcid: "https://orcid.org/0009-0001-9992-8997"
+version: 0.1.0
+date-released: "2026-10-20"
+license: MIT
+repository-code: "https://github.com/rollamadugu/trustlab"
+keywords:
+  - software testing
+  - test automation
+  - mutation testing
+  - test oracle
+  - self-healing tests
+  - LLM-as-judge
+  - trustworthy AI
+  - calibration
+abstract: >-
+  TrustLab is a reproducible research prototype that measures when AI-generated,
+  AI-healed, and AI-adjudicated test verdicts can be believed. It defines the
+  False-Confidence Gap (the distance between how often tests appear to pass and
+  how often they are actually sound), grounds soundness in real AST-based
+  mutation testing, and builds a calibrated trust metric evaluated with ROC-AUC,
+  Mann-Whitney U, Vargha-Delaney A12, and Expected Calibration Error against a
+  naive baseline across three AI testing modalities.

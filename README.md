@@ -19,6 +19,8 @@ no LLM API, no cloud.
 
 ---
 
+![False-Confidence Gap by AI testing modality](assets/false_confidence_gap.png)
+
 ## Headline results (15 seeds, held-out evaluation)
 
 | Modality | False-Confidence Gap | Trust ROC-AUC (naive = 0.50) | ECE | False-pass rate: naive → trust (accept top 70%) |
@@ -31,6 +33,13 @@ All effect sizes "large" (Vargha–Delaney A12 0.76–0.95), Mann–Whitney p < 
 Secondary finding: for AI-generated oracles the gap tracks code structure —
 branch-heavy `grade` (99.7%) and `triangle_type` (93.6%) are far more dangerous
 than simple `classify_bmi` (5.2%).
+
+![False-pass rate: naive vs trust-gated](assets/false_pass_reduction.png)
+
+The trust metric does not just score — it acts. Dropping the least-trustworthy
+30% of green verdicts cuts the silent false-pass rate dramatically for healing
+(11% → 0.5%) and adjudication (40% → 19%), while a naive "trust any green"
+policy cannot distinguish them at all (ROC-AUC 0.50 by construction).
 
 ## Why this is a research result, not just a tool
 
