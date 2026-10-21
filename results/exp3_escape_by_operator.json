@@ -1,0 +1,64 @@
+{
+  "experiment": "escape_rate_by_operator",
+  "seeds": 15,
+  "suites_per_subject": 60,
+  "note": "escape rate = fraction of injected faults of this class that AI-generated suites FAILED to catch (lower is better).",
+  "operators": {
+    "ROR": {
+      "label": "Relational (< > == off-by-one)",
+      "escape_rate_mean": 0.4411,
+      "escape_rate_ci95_across_seeds": [
+        0.4354,
+        0.4462
+      ],
+      "pooled_escape_rate": 0.4411,
+      "pooled_wilson_ci95": [
+        0.434,
+        0.4482
+      ],
+      "mutant_trials": 18900
+    },
+    "CRP": {
+      "label": "Constant",
+      "escape_rate_mean": 0.3429,
+      "escape_rate_ci95_across_seeds": [
+        0.3368,
+        0.3496
+      ],
+      "pooled_escape_rate": 0.3429,
+      "pooled_wilson_ci95": [
+        0.3366,
+        0.3493
+      ],
+      "mutant_trials": 21600
+    },
+    "LCR": {
+      "label": "Logical (and / or)",
+      "escape_rate_mean": 0.3411,
+      "escape_rate_ci95_across_seeds": [
+        0.3267,
+        0.3563
+      ],
+      "pooled_escape_rate": 0.3411,
+      "pooled_wilson_ci95": [
+        0.3235,
+        0.3592
+      ],
+      "mutant_trials": 2700
+    },
+    "AOR": {
+      "label": "Arithmetic (+ - * /)",
+      "escape_rate_mean": 0.137,
+      "escape_rate_ci95_across_seeds": [
+        0.1302,
+        0.144
+      ],
+      "pooled_escape_rate": 0.137,
+      "pooled_wilson_ci95": [
+        0.1311,
+        0.1431
+      ],
+      "mutant_trials": 12600
+    }
+  }
+}

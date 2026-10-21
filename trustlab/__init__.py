@@ -17,4 +17,4 @@ actually sound -- a *false pass* that creates false confidence. TrustLab:
 Pure Python standard library (+ pytest for tests) so it runs on any laptop.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "trustlab"
-version = "0.1.0"
+version = "0.2.0"
 description = "A measurement theory of trust in AI-driven software testing: when AI-generated, AI-healed, and AI-adjudicated test verdicts can be believed."
 readme = "README.md"
 requires-python = ">=3.10"

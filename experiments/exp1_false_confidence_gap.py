@@ -17,7 +17,7 @@ import os
 from typing import Dict, List
 
 from trustlab.benchmark import generate_all
-from trustlab.metrics.stats import summarize
+from trustlab.metrics.stats import bootstrap_ci, summarize
 from trustlab.trust.metric import false_confidence_gap
 
 RESULTS = os.path.join(os.path.dirname(__file__), "..", "results")
@@ -47,6 +47,7 @@ def run(seeds: int = 15) -> Dict:
         "seeds": seeds,
         "modalities": {
             m: {"false_confidence_gap": summarize(per_modality[m]),
+                "ci95": [round(c, 4) for c in bootstrap_ci(per_modality[m], seed=7)],
                 "mean_green_per_run": summarize(green_counts[m])["mean"]}
             for m in per_modality
         },
@@ -68,8 +69,9 @@ def main() -> None:
     print(f"  seeds = {out['seeds']}")
     for m, d in out["modalities"].items():
         g = d["false_confidence_gap"]
-        print(f"  {m:7s}  FCG = {g['mean']:.1%}  (std {g['std']:.1%}, "
-              f"range {g['min']:.0%}-{g['max']:.0%})   ~{d['mean_green_per_run']:.0f} green/run")
+        lo, hi = d["ci95"]
+        print(f"  {m:7s}  FCG = {g['mean']:.1%}  95% CI [{lo:.1%}, {hi:.1%}]  "
+              f"(std {g['std']:.1%})   ~{d['mean_green_per_run']:.0f} green/run")
     print("\n  interpretation: 'trust the green' is wrong this often. "
           "A large FCG == large hidden false confidence.")
     print("  oracle FCG by subject (real mutation-score ground truth):")

@@ -212,6 +212,36 @@ def suite_mutation_score(suite: AISuite, ref, mutants) -> float:
     return killed / len(pool)
 
 
+def escape_counts_by_operator(rng: random.Random, suites_per_subject: int = 60,
+                              n_tests: int = 10,
+                              dist: Dict[OracleKind, float] = None) -> Dict[str, Dict[str, int]]:
+    """For each mutation operator class (AOR/ROR/LCR/CRP/UOD), count how often a
+    mutant of that class is *killed* vs *escapes* across AI-generated suites.
+
+    This breaks the single combined fault-detection number down by fault *type*,
+    which is far more actionable: it shows which kinds of bugs AI oracles miss
+    most (e.g. off-by-one / relational faults vs. logical-connector faults).
+    Returns ``{operator: {"killed": k, "total": t}}``.
+    """
+    dist = dist or AI_DIST_DEFAULT
+    counts: Dict[str, Dict[str, int]] = {}
+    for subject in SUBJECTS:
+        ref = subject.compile_ref()
+        mutants = [m for m in generate_mutants(subject)
+                   if m.func is not None and not m.equivalent]
+        if not mutants:
+            continue
+        suites = [_make_suite(subject, ref, rng, dist, n_tests)
+                  for _ in range(suites_per_subject)]
+        for m in mutants:
+            bucket = counts.setdefault(m.operator, {"killed": 0, "total": 0})
+            for suite in suites:
+                bucket["total"] += 1
+                if not suite.green_on(m.func):   # suite goes red => fault caught
+                    bucket["killed"] += 1
+    return counts
+
+
 def generate_oracle_verdicts(rng: random.Random, suites_per_subject: int = 80,
                              n_tests: int = 10,
                              dist: Dict[OracleKind, float] = None,

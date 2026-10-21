@@ -24,16 +24,35 @@ no LLM API, no cloud.
 
 ## Headline results (15 seeds, held-out evaluation)
 
-| Modality | False-Confidence Gap | Trust ROC-AUC (naive = 0.50) | ECE | False-pass rate: naive → trust (accept top 70%) |
-|---|---|---|---|---|
-| AI-generated oracles | 61.9% | 0.757 | 0.076 | 61% → 50% |
-| AI self-healing | 10.8% | 0.947 | 0.042 | 11% → **0.5%** |
-| AI adjudication | 40.7% | 0.944 | 0.045 | 40% → **19%** |
+| Modality | Grounding | False-Confidence Gap (95% CI) | Trust ROC-AUC (naive = 0.50) | ECE | False-pass rate: naive → trust (top 70%) |
+|---|---|---|---|---|---|
+| AI-generated oracles | **real** (mutation-tested) | 61.9% [61.3, 62.6] | 0.757 | 0.076 | 61% → 50% |
+| AI self-healing | modelled (behind adapter) | 10.8% [10.3, 11.2] | 0.947 | 0.042 | 11% → **0.5%** |
+| AI adjudication | modelled (behind adapter) | 40.7% [40.0, 41.5] | 0.944 | 0.045 | 40% → **19%** |
 
-All effect sizes "large" (Vargha–Delaney A12 0.76–0.95), Mann–Whitney p < 0.001.
-Secondary finding: for AI-generated oracles the gap tracks code structure —
+95% CIs are percentile bootstrap across 15 seeds. All effect sizes "large"
+(Vargha–Delaney A12 0.76–0.95), Mann–Whitney p < 0.001.
+
+> **Read the grounding column carefully.** Only the **oracle** result is a *real*
+> measurement — soundness is decided by a live AST mutation engine. The
+> **healing** and **adjudication** results are empirically-shaped *models* of
+> documented tool/LLM behaviour, placed behind an adapter seam so a real tool can
+> be dropped in unchanged (see [Pre-registration](PREREGISTRATION.md) for the
+> planned real-LLM-judge run). The numbers for those two describe the model, not
+> a real tool — don't read them as measured behaviour.
+
+**Secondary finding — the gap tracks code structure.** For AI-generated oracles,
 branch-heavy `grade` (99.7%) and `triangle_type` (93.6%) are far more dangerous
 than simple `classify_bmi` (5.2%).
+
+**Which faults escape? (real mutation testing, by operator class)**
+
+![Escape rate by mutation-operator class](assets/escape_by_operator.png)
+
+Breaking the oracle result down by *fault type* is more actionable than one
+combined number: **relational / off-by-one faults escape most (44.1%)**, while
+arithmetic faults are caught far more often (13.7%). So AI-generated assertions
+are weakest exactly on boundary conditions — the bugs that bite in production.
 
 ![False-pass rate: naive vs trust-gated](assets/false_pass_reduction.png)
 
@@ -59,8 +78,8 @@ trustlab/
   trust/metric.py unified calibrated trust metric + False-Confidence Gap
   metrics/stats.py ROC-AUC, Mann–Whitney U, Vargha–Delaney A12, ECE
   benchmark.py    builds the labelled verdict corpus -> results/trust_benchmark.json
-experiments/      exp1 (the phenomenon) · exp2 (the metric vs naive)
-tests/            full pytest suite (19 tests)
+experiments/      exp1 (the phenomenon) · exp2 (the metric vs naive) · exp3 (escape by operator)
+tests/            full pytest suite (29 tests)
 results/          experimental result artefacts (JSON)
 ```
 
@@ -70,9 +89,10 @@ results/          experimental result artefacts (JSON)
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
-pytest                                            # 19 tests
-python -m experiments.exp1_false_confidence_gap   # the phenomenon
+pytest                                            # 29 tests
+python -m experiments.exp1_false_confidence_gap   # the phenomenon (with 95% CIs)
 python -m experiments.exp2_trust_metric           # the metric vs naive
+python -m experiments.exp3_escape_by_operator     # escape rate by fault type
 python -m trustlab.benchmark                      # build the labelled benchmark
 ```
 

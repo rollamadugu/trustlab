@@ -116,6 +116,47 @@ def expected_calibration_error(scores: Sequence[float], correct: Sequence[int],
     return ece
 
 
+def bootstrap_ci(values: Sequence[float], iters: int = 2000,
+                 alpha: float = 0.05, seed: int = 0) -> Tuple[float, float]:
+    """Percentile bootstrap confidence interval for the mean of ``values``.
+
+    Pure standard library. Returns ``(lo, hi)`` for the ``1 - alpha`` interval
+    (default 95%). With few samples the interval is honestly wide -- which is the
+    point: it stops us reading noise as signal.
+    """
+    import random as _random
+    vs = list(values)
+    n = len(vs)
+    if n == 0:
+        return (0.0, 0.0)
+    if n == 1:
+        return (vs[0], vs[0])
+    rng = _random.Random(seed)
+    means = []
+    for _ in range(iters):
+        sample = [vs[rng.randrange(n)] for _ in range(n)]
+        means.append(sum(sample) / n)
+    means.sort()
+    lo_idx = int((alpha / 2.0) * iters)
+    hi_idx = min(iters - 1, int((1.0 - alpha / 2.0) * iters))
+    return (means[lo_idx], means[hi_idx])
+
+
+def wilson_interval(successes: int, total: int, z: float = 1.96) -> Tuple[float, float]:
+    """Wilson score interval for a binomial proportion ``successes/total``.
+
+    Appropriate when reporting a single run's escape/kill rate over a finite
+    number of mutant trials, where a normal approximation is unreliable.
+    """
+    if total == 0:
+        return (0.0, 0.0)
+    p = successes / total
+    denom = 1.0 + z * z / total
+    centre = (p + z * z / (2 * total)) / denom
+    margin = (z * math.sqrt((p * (1 - p) + z * z / (4 * total)) / total)) / denom
+    return (max(0.0, centre - margin), min(1.0, centre + margin))
+
+
 def summarize(values: Sequence[float]) -> Dict[str, float]:
     if not values:
         return {"n": 0, "mean": 0.0, "median": 0.0, "min": 0.0, "max": 0.0, "std": 0.0}
